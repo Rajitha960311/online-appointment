@@ -127,7 +127,8 @@ public class AppointmentControllerOnline {
 		String id = todayDate+"/"+currentTime;
 		
 		ap.setAppointmentID(id);
-		ap.setStatus("pending");
+		ap.setAppointmentStatus("pending");
+		ap.setPullStatus(false);
 		service.save(ap);
 		redirectAttributes.addFlashAttribute("success", 1);
 		return "redirect:/";

@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,10 +15,6 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="appointment")
 public class Appointment {
-	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ai_id")
-	private String autoIncrementId;
 	
 	@Id
 	@Column(name="appointment_id")
@@ -54,19 +48,20 @@ public class Appointment {
 	@Column(name="appointment_time")
 	private String appointmentTime;
 	
-	@Column(name="status")
-	private String status;
+	@Column(name="appointment_status")
+	private String appointmentStatus;
+	
+	@Column(name="pull_status")
+	private Boolean pullStatus;
 
 	public Appointment() {
 		super();
 	}
 
-	public Appointment(String autoIncrementId, String appointmentID, String cusName, String cusMobileNo,
-			String cusEmail, String vehicleNo, com.example.OnlineAppointment.entity.VehicleClass vehicleClassId,
-			com.example.OnlineAppointment.entity.TestCategory categoryId, Date appointmentDate, String appointmentTime,
-			String status) {
+	public Appointment(String appointmentID, String cusName, String cusMobileNo, String cusEmail, String vehicleNo,
+			VehicleClass vehicleClassId, TestCategory categoryId, Date appointmentDate, String appointmentTime,
+			String appointmentStatus, Boolean pullStatus) {
 		super();
-		this.autoIncrementId = autoIncrementId;
 		this.appointmentID = appointmentID;
 		this.cusName = cusName;
 		this.cusMobileNo = cusMobileNo;
@@ -76,15 +71,8 @@ public class Appointment {
 		this.categoryId = categoryId;
 		this.appointmentDate = appointmentDate;
 		this.appointmentTime = appointmentTime;
-		this.status = status;
-	}
-
-	public String getAutoIncrementId() {
-		return autoIncrementId;
-	}
-
-	public void setAutoIncrementId(String autoIncrementId) {
-		this.autoIncrementId = autoIncrementId;
+		this.appointmentStatus = appointmentStatus;
+		this.pullStatus = pullStatus;
 	}
 
 	public String getAppointmentID() {
@@ -159,13 +147,19 @@ public class Appointment {
 		this.appointmentTime = appointmentTime;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getAppointmentStatus() {
+		return appointmentStatus;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setAppointmentStatus(String appointmentStatus) {
+		this.appointmentStatus = appointmentStatus;
 	}
-	
 
+	public Boolean getPullStatus() {
+		return pullStatus;
+	}
+
+	public void setPullStatus(Boolean pullStatus) {
+		this.pullStatus = pullStatus;
+	}
 }
