@@ -45,18 +45,17 @@ public class AppointmentControllerOnline {
 	
 	@RequestMapping(value="/viewFreeTimeSlots", method=RequestMethod.GET)
 	public @ResponseBody String[] viewFreeTimeSlots(@RequestParam String catID,
-			@RequestParam String selectedDate,
-			@RequestParam String date2) throws ParseException{
+			@RequestParam String selectedDate) throws ParseException{
 		
-		SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-		SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat tf = new SimpleDateFormat("HH:mm"); // time format
+		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");  // date format
 		
-		Date ot = df.parse("08:00");
-		Date ct = df.parse("22:00");
+		Date ot = tf.parse("08:00");
+		Date ct = tf.parse("22:00");
 		
-		Date choseDate = df2.parse(selectedDate);  
-		Date todayDate = df2.parse(df2.format(new Date()));
-		Date currentTime = df.parse(df.format(new Date()));
+		Date choseDate = df.parse(selectedDate);  
+		Date todayDate = df.parse(df.format(new Date()));
+		Date currentTime = tf.parse(tf.format(new Date()));
 		
 		long difference = 0;
 		
@@ -72,17 +71,18 @@ public class AppointmentControllerOnline {
 		for (int i = 0; i < noOfTimeSlots; i++) {
 			
 			if(i ==0) {
-				a[i]=df.format(ot);
+				a[i]=tf.format(ot);
 			}else {
 				calender.setTime(ot);
 				calender.add(Calendar.MINUTE, (int) testAproTime);
 				ot = calender.getTime();
-				a[i]=df.format(ot);
+				a[i]=tf.format(ot);
 			}
 			
 		}
 		
-		// no of vehicles for a one time = no of lanes for a test category * lane capacity
+		// As a example, The Center Has two LCV lanes. 1 st LCV lane capacity is 3, 2 nd LCV lane capacity is 2
+		// totalLaneCapacity (for LCV vehicles at 8 am)= 3 +2 =5
 		int totalLaneCapacity =  service.getCategoryById(catID).getTotalLaneCapacity();
 		
 		String[] reservedTimeList =  service.getReservedTimes(choseDate,catID);
@@ -91,7 +91,7 @@ public class AppointmentControllerOnline {
 	
 		for (int i = 0; i < a.length; i++) {
 	
-			Date time_slot = df.parse(a[i]);
+			Date time_slot = tf.parse(a[i]);
 			
 			if(choseDate.compareTo(todayDate)==0 && time_slot.compareTo(currentTime)<0) {
 				continue;
@@ -99,7 +99,7 @@ public class AppointmentControllerOnline {
 			
 			int l=0;
 			for (int j = 0; j < reservedTimeList.length; j++) {
-				Date reserved_slot = df.parse(reservedTimeList[j]);
+				Date reserved_slot = tf.parse(reservedTimeList[j]);
 				if (time_slot.compareTo(reserved_slot)==0) {
 					l = l+1;
 				}
